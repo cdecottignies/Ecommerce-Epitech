@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7
+    container_name: epistore_mysql
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+    # Je crée Tables directement avec Sequelize
+      # - ./ressources/injob.sql:/docker-entrypoint-initdb.d/injob.sql
+      - ./ressources/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: epistore
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    container_name: epistore_admirer
+    restart: always
+    ports:
+      - 8080:8080
